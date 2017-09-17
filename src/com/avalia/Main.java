@@ -1,8 +1,6 @@
 package com.avalia;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -26,77 +24,34 @@ public class Main {
 
     public void sortedWordCount(String str) {
         String[] extract = extract(str);
-        WordCount[] wordCounts = countByWord(extract);
-        WordCount[] sort = sort(wordCounts);
-        print(sort);
+        Map<String,Integer> wordCounts = countByWord(extract);
+        print(wordCounts);
     }
 
     private String[] extract(String str) {
-        List<String> result = new ArrayList<>();
-        char[] array = str.toCharArray();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == ' ') {
-                result.add(sb.toString());
-                sb = new StringBuilder();
+        return str.split(" ");
+    }
+
+
+    private Map<String, Integer> countByWord(String[] arr) {
+        Map<String, Integer> result = new TreeMap<>();
+
+        for (String s : arr) {
+            Integer count = result.get(s);
+            if (count == null) {
+                result.put(s, 1);
             } else {
-                sb.append(array[i]);
+                result.put(s, count + 1);
             }
         }
-        result.add(sb.toString());
-        return result.toArray(new String[result.size()]);
+        return result;
     }
 
-    private WordCount[] countByWord(String[] arr) {
-        List<WordCount> result = new ArrayList<>();
-        int pos = 0;
-        String word = "";
-        int count = 0;
-        for (int i = 0; i < arr.length; i++) {
-            word = arr[i];
-            if (word == null) {
-                continue;
-            }
-            for (int j = i; j < arr.length; j++) {
-                if (word.equals(arr[j])) {
-                    arr[j] = null;
-                    count++;
-                }
-            }
 
-            result.add(new WordCount(word, count));
-            pos++;
-            word = "";
-            count = 0;
-        }
 
-        return result.toArray(new WordCount[result.size()]);
-    }
-
-    private WordCount[] sort(WordCount[] arr) {
-
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr.length; j++) {
-                WordCount first = arr[i];
-                WordCount second = arr[j];
-                if (first == null || second == null) {
-                    continue;
-                }
-                int comp = first.word.compareToIgnoreCase(second.word);
-                if (comp < 0) {
-                    WordCount temp;
-                    temp = first;
-                    arr[i] = second;
-                    arr[j] = temp;
-                }
-            }
-        }
-        return arr;
-    }
-
-    private void print(WordCount[] arr) {
-        for (WordCount s : arr) {
-            System.out.println(s);
+    private void print(Map<String,Integer> map) {
+        for (Map.Entry s : map.entrySet()) {
+            System.out.println(s.getKey()+"->"+s.getValue());
         }
 
     }
