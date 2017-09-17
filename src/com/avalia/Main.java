@@ -1,13 +1,15 @@
 package com.avalia;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        //new Main().sortedWordCount("this is is is is new string with with rahul");
-        new Main().sortedWordCount();
+        new Main().sortedWordCount("this is is is is new string with with rahul is is is rahul java code new scala c++ and");
+        //new Main().sortedWordCount();
 
     }
 
@@ -15,6 +17,7 @@ public class Main {
     public void sortedWordCount() {
         sortedWordCount(input());
     }
+
     private String input() {
         Scanner scanner = new Scanner(System.in);
         String str = scanner.nextLine();
@@ -29,26 +32,23 @@ public class Main {
     }
 
     private String[] extract(String str) {
-        // TODO : will implement later
-        String[] result = new String[10];
+        List<String> result = new ArrayList<>();
         char[] array = str.toCharArray();
-        int intPos = 0;
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < array.length; i++) {
             if (array[i] == ' ') {
-                result[intPos] = sb.toString();
+                result.add(sb.toString());
                 sb = new StringBuilder();
-                intPos++;
             } else {
                 sb.append(array[i]);
             }
         }
-        result[intPos] = sb.toString();
-        return result;
+        result.add(sb.toString());
+        return result.toArray(new String[result.size()]);
     }
 
     private WordCount[] countByWord(String[] arr) {
-        WordCount[] result = new WordCount[10];
+        List<WordCount> result = new ArrayList<>();
         int pos = 0;
         String word = "";
         int count = 0;
@@ -64,13 +64,13 @@ public class Main {
                 }
             }
 
-            result[pos] = new WordCount(word, count);
+            result.add(new WordCount(word, count));
             pos++;
             word = "";
             count = 0;
         }
 
-        return result;
+        return result.toArray(new WordCount[result.size()]);
     }
 
     private WordCount[] sort(WordCount[] arr) {
